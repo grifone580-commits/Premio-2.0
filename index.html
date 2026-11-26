@@ -1,0 +1,1964 @@
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COTRAL - KPI &amp; Straordinari</title>
+    <!-- Caricamento Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        cotral: {
+                            header: '#1A3E9C',
+                            royal: '#1D39A9',
+                            card: '#2554D4',
+                            darkbanner: '#153084',
+                            pill: '#2B5CE0',
+                            gold: '#FACC15',
+                            bg: '#F3F6FC',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .uilt-watermark {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.045;
+            background-image: repeating-linear-gradient(
+                -28deg,
+                transparent,
+                transparent 110px,
+                rgba(29, 57, 169, 0.22) 110px,
+                rgba(29, 57, 169, 0.22) 111px
+            );
+            overflow: hidden;
+        }
+        .uilt-watermark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 3.5rem 2rem;
+            padding: 2rem;
+            transform: rotate(-24deg) scale(1.2);
+            transform-origin: center;
+        }
+        .uilt-watermark-item {
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            color: #1D39A9;
+            line-height: 1.05;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-cotral-bg text-slate-800 font-sans antialiased min-h-screen flex flex-col pb-24 relative">
+
+    <!-- WATERMARK UILTRASPORTI LAZIO -->
+    <div class="uilt-watermark" aria-hidden="true">
+        <div class="uilt-watermark-grid text-xs sm:text-sm">
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+            <div class="uilt-watermark-item">UILTRASPORTI<br><span class="text-[10px] tracking-[0.28em]">LAZIO</span></div>
+        </div>
+    </div>
+
+    <!-- 1. HEADER SUPERIORE BLU REALE -->
+    <header class="bg-cotral-header text-white sticky top-0 z-30 shadow-sm">
+        <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+                <span class="bg-white text-cotral-header font-black text-xs sm:text-sm tracking-wide px-3 py-1 rounded-full shadow-sm uppercase">
+                    COTRAL
+                </span>
+                <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">
+                    KPI &amp; Straordinari
+                </h1>
+            </div>
+            
+            <span id="header-month-pill" class="bg-white/15 border border-white/15 text-white text-xs sm:text-sm font-semibold px-3.5 py-1 rounded-full">
+                Novembre 2026
+            </span>
+        </div>
+    </header>
+
+    <!-- 2. BARRA SELEZIONE TRIMESTRE / MESE & STIMA PREMIO -->
+    <div class="bg-white/95 backdrop-blur-xs border-b border-slate-200/90 shadow-xs relative z-20">
+        <div class="max-w-xl mx-auto px-4 py-3 space-y-2.5">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col flex-1 min-w-0">
+                    <label for="trimestre-selector" class="text-[10px] font-extrabold uppercase tracking-wider text-cotral-royal mb-1">
+                        SELEZIONA TRIMESTRE
+                    </label>
+                    <div class="relative">
+                        <select id="trimestre-selector" onchange="onTrimestreSelectChange()" class="w-full appearance-none bg-blue-50/70 border border-cotral-royal/30 rounded-xl pl-3.5 pr-9 py-2 text-xs sm:text-sm font-bold text-slate-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-cotral-royal">
+                            <option value="1">1° Trimestre: Agosto – Ottobre</option>
+                            <option value="2" selected>2° Trimestre: Novembre – Gennaio</option>
+                            <option value="3">3° Trimestre: Febbraio – Aprile</option>
+                            <option value="4">4° Trimestre: Maggio – Luglio</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-cotral-royal pointer-events-none absolute right-2.5 top-2.5"></i>
+                    </div>
+                </div>
+
+                <div class="text-right shrink-0">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                        STIMA PREMIO MESE
+                    </span>
+                    <span id="top-stima-premio" class="text-2xl sm:text-3xl font-extrabold text-cotral-royal tracking-tight">
+                        0,00 €
+                    </span>
+                </div>
+            </div>
+
+            <!-- Selettore Rapido dei 3 Mesi del Trimestre + Anno Base -->
+            <div class="flex items-center justify-between gap-2">
+                <div id="quarter-month-pills" class="grid grid-cols-3 gap-1.5 flex-1">
+                    <!-- Popolato dinamicamente con i 3 mesi del trimestre -->
+                </div>
+                <div class="shrink-0">
+                    <label for="month-year-selector" class="sr-only">Mese e Anno</label>
+                    <select id="month-year-selector" onchange="onCombinedMonthChange()" class="bg-white border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-cotral-royal">
+                        <!-- Popolato dinamicamente da JS -->
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENITORE PRINCIPALE MOBILE-FIRST (max-w-xl) -->
+    <main class="flex-grow max-w-xl w-full mx-auto px-4 pt-4 space-y-5 relative z-10">
+
+        <!-- =========================================================
+             TAB 1: GIORNALIERO (Card Blu Riepilogo + Mese per Mese + Tabella Giorni)
+        ========================================================== -->
+        <section id="view-giornaliero" class="app-view space-y-5">
+
+            <!-- 3. CARD PRINCIPALE RIEPILOGO PARAMETRI & MOLTIPLICATORE (#1D39A9) -->
+            <div class="bg-cotral-royal text-white rounded-3xl p-5 shadow-lg space-y-4">
+                <!-- Intestazione Card -->
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider leading-snug text-blue-50">
+                            RIEPILOGO PARAMETRI &amp;<br>MOLTIPLICATORE
+                        </h2>
+                    </div>
+                    <span id="card-month-badge" class="bg-cotral-pill text-white text-[11px] font-extrabold uppercase tracking-wide px-3 py-1.5 rounded-xl text-center leading-tight shadow-xs">
+                        NOVEMBRE<br>2026
+                    </span>
+                </div>
+
+                <!-- Griglia 2x2 Card Interne -->
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Card 1: Bilancio Ore (2bis) -->
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10 flex flex-col justify-between">
+                        <span class="text-xs font-medium text-blue-100">Bilancio Ore (2bis)</span>
+                        <span id="card-bilancio-ore" class="text-xl sm:text-2xl font-extrabold text-white mt-2 tracking-tight">
+                            +0h 00m
+                        </span>
+                    </div>
+
+                    <!-- Card 2: Moltiplicatore 2bis -->
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10 flex flex-col justify-between">
+                        <span class="text-xs font-medium text-blue-100">Moltiplicatore 2bis</span>
+                        <span id="card-moltiplicatore" class="text-xl sm:text-2xl font-extrabold text-cotral-gold mt-2 tracking-tight">
+                            0.0x
+                        </span>
+                    </div>
+
+                    <!-- Card 3: Fascia Regolarità (1) -->
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10 flex flex-col justify-between">
+                        <span class="text-xs font-medium text-blue-100">Fascia Regolarità (1)</span>
+                        <span id="card-fascia-reg" class="text-sm sm:text-base font-extrabold text-white mt-2 leading-tight">
+                            Fascia 1 (50€)
+                        </span>
+                    </div>
+
+                    <!-- Card 4: Turni Esigibili (2) -->
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10 flex flex-col justify-between">
+                        <div class="flex items-start justify-between gap-1.5">
+                            <span class="text-xs font-medium text-blue-100 leading-tight">Turni Esigibili (2)</span>
+                            <span id="card-turni-badge" class="bg-cotral-royal text-[10px] font-bold text-blue-100 px-2 py-0.5 rounded-lg text-center leading-tight shrink-0">
+                                0<br>turni
+                            </span>
+                        </div>
+                        <span id="card-fascia-turni" class="text-sm sm:text-base font-extrabold text-white mt-1.5 leading-tight">
+                            Fascia 4 (0€)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Banner 1: Cumulo Assenze -->
+                <div class="bg-cotral-darkbanner rounded-2xl px-4 py-3.5 border border-white/5 flex items-center justify-between gap-3">
+                    <div class="space-y-0.5">
+                        <h3 class="text-xs sm:text-sm font-bold text-white leading-snug">
+                            Cumulo Assenze<br>(Mal.+104+Par.+Dist.Az.)
+                        </h3>
+                        <p id="card-cumulo-sub" class="text-[11px] text-blue-200/90">
+                            Max 3 giorni consentiti nel mese
+                        </p>
+                    </div>
+                    <div id="card-cumulo-val" class="text-lg sm:text-xl font-extrabold text-white text-right leading-tight shrink-0">
+                        0 /<br>3
+                    </div>
+                </div>
+
+                <!-- Banner 2: Eventi Malattia nel Mese -->
+                <div class="bg-cotral-darkbanner rounded-2xl px-4 py-3.5 border border-white/5 flex items-center justify-between gap-3">
+                    <div class="space-y-0.5">
+                        <h3 class="text-xs sm:text-sm font-bold text-white leading-snug">
+                            Eventi Malattia nel Mese
+                        </h3>
+                        <p class="text-[11px] text-blue-200/90 leading-snug">
+                            Giorni consecutivi = 1 evento; da 2 eventi escluso
+                        </p>
+                    </div>
+                    <div id="card-malattia-val" class="text-base sm:text-lg font-extrabold text-white text-right leading-tight shrink-0">
+                        0 / 1<br>max
+                    </div>
+                </div>
+
+                <!-- Banner 3: Credito Welfare & Festivi maturati in tempo reale -->
+                <div class="bg-cotral-darkbanner rounded-2xl px-4 py-3 border border-white/10 flex items-center justify-between gap-3">
+                    <div class="space-y-0.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-cotral-gold block">Maturazione Semestrale Live</span>
+                        <h3 class="text-xs font-bold text-white">
+                            Welfare: <span id="card-live-welfare-turni">0 / 139</span> turni • Festivi: <span id="card-live-festivi">0</span>
+                        </h3>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span id="card-live-sem-euro" class="text-base font-extrabold text-cotral-gold">0,00 €</span>
+                    </div>
+                </div>
+
+                <!-- Avviso dinamico esclusioni o regola 22 giorni -->
+                <div id="card-warning-box" class="hidden bg-amber-500/20 border border-amber-300/40 rounded-2xl p-3 text-xs text-amber-100 space-y-1">
+                    <div class="flex items-center gap-1.5 font-bold text-cotral-gold">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+                        <span id="card-warning-title">Premio mensile non ancora maturato</span>
+                    </div>
+                    <ul id="card-warning-list" class="list-disc list-inside text-[11px] space-y-0.5 text-blue-50"></ul>
+                </div>
+
+                <!-- Riga finale Totale Stimato Mese -->
+                <div class="pt-3 border-t border-white/15 flex items-center justify-between gap-2">
+                    <div>
+                        <span class="text-sm sm:text-base font-semibold text-blue-100 block">Totale Stimato Mese:</span>
+                        <span id="card-indennita-note" class="text-[11px] text-blue-200">
+                            KPI 3 Evitato sinistri: +30,00 €
+                        </span>
+                    </div>
+                    <span id="card-totale-mese" class="text-2xl sm:text-3xl font-extrabold text-cotral-gold tracking-tight">
+                        0,00 €
+                    </span>
+                </div>
+            </div>
+
+            <!-- BOX IMMEDIATO MESE PER MESE + SOMMA TRIMESTRE -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="px-4 py-3.5 bg-slate-50/90 border-b border-slate-200/80 flex items-center justify-between gap-2">
+                    <div>
+                        <span id="quick-trim-badge" class="text-[10px] font-extrabold uppercase tracking-wider text-cotral-royal block">
+                            2° TRIMESTRE • NOV – GEN
+                        </span>
+                        <h2 class="font-bold text-sm text-slate-900">Mese per Mese + Somma Trimestre</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block">Somma Trimestre</span>
+                        <span id="quick-trim-sum" class="text-base sm:text-lg font-extrabold text-cotral-royal">0,00 €</span>
+                    </div>
+                </div>
+                <div id="quick-trim-month-cards" class="p-3 grid grid-cols-3 gap-2">
+                    <!-- Popolato dinamicamente con i 3 mesi cliccabili -->
+                </div>
+            </div>
+
+            <!-- SEZIONE TABELLA DEL MESE DIRETTAMENTE EDITABILE -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="px-4 py-4 border-b border-slate-100 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-2xl bg-blue-50 text-cotral-royal flex items-center justify-center shrink-0">
+                                <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-sm sm:text-base text-slate-900">Tabella Giornaliera Mese</h2>
+                                <p class="text-[11px] text-slate-500">Scegli l'attività a tendina o tocca il giorno per orari e turno</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full shrink-0">
+                            Auto-Calcolo
+                        </span>
+                    </div>
+
+                    <!-- Statistiche sessagesimali del mese -->
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-2">
+                            <span class="text-[10px] font-semibold uppercase text-slate-400 block">Durata Turni</span>
+                            <strong id="cal-stat-durata-turni" class="text-sm font-extrabold text-slate-800">00:00</strong>
+                        </div>
+                        <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-2">
+                            <span class="text-[10px] font-semibold uppercase text-emerald-700 block">Straordinario</span>
+                            <strong id="cal-stat-straord" class="text-sm font-extrabold text-emerald-700">00:00</strong>
+                        </div>
+                        <div class="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-2">
+                            <span class="text-[10px] font-semibold uppercase text-cotral-royal block">Totale Ore (60)</span>
+                            <strong id="cal-stat-tot-ore" class="text-sm font-extrabold text-cotral-royal">00:00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Azioni Rapide Compilazione Mese -->
+                    <div class="flex items-center justify-between gap-2 pt-0.5">
+                        <button type="button" onclick="fillWorkdaysWithShifts()" class="flex-1 bg-blue-50 hover:bg-blue-100 text-cotral-royal border border-blue-200 text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                            <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+                            <span>Compila feriali (Lavorativo)</span>
+                        </button>
+                        <button type="button" onclick="clearCurrentMonthCalendar()" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            <span>Svuota</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LISTA / TABELLA COMPLETA DEI GIORNI DEL MESE (1°, 2, 3...) -->
+                <div id="monthly-rows-container" class="divide-y divide-slate-200/80">
+                    <!-- Popolato dinamicamente con tutte le righe del mese -->
+                </div>
+            </div>
+
+            <!-- SEZIONE REGOLARITÀ & INCIDENTALITÀ (KPI 1 & KPI 3) -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-cotral-royal flex items-center justify-center">
+                            <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-sm text-slate-900">Regolarità &amp; Incidentalità</h2>
+                            <p class="text-[11px] text-slate-500">KPI 1 (Regolarità) e KPI 3 (Sinistri)</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="openModal('modal-tabella')" class="text-xs font-bold text-cotral-royal hover:underline">
+                        Tabella KPI
+                    </button>
+                </div>
+
+                <div class="p-4 space-y-4">
+                    <!-- KPI 1: Regolarità -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-800">KPI 1 • Regolarità Servizio</span>
+                            <span id="badge-kpi1" class="text-xs font-extrabold bg-cotral-royal text-white px-2.5 py-0.5 rounded-full">50 €</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div>
+                                <label for="kpi1-percent" class="text-[11px] font-semibold text-slate-500 block mb-1">Percentuale (%)</label>
+                                <input type="number" id="kpi1-percent" step="0.01" min="0" max="105" value="100.00" oninput="onKpi1PercentChange()" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="kpi1-fascia" class="text-[11px] font-semibold text-slate-500 block mb-1">Fascia</label>
+                                <select id="kpi1-fascia" onchange="onKpi1FasciaChange()" class="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                    <option value="1" selected>Fascia 1: ≥ 100% (50 €)</option>
+                                    <option value="2">Fascia 2: 99,00-99,99% (30 €)</option>
+                                    <option value="3">Fascia 3: 98,00-98,99% (10 €)</option>
+                                    <option value="4">Fascia 4: &lt; 98,00% (0 €)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matrice Moltiplicatore 2bis -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-800">Matrice Moltiplicatore (KPI 2 × 2bis)</span>
+                            <span id="badge-kpi2-tot" class="text-xs font-extrabold bg-cotral-royal text-white px-2.5 py-0.5 rounded-full">0,00 €</span>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+                            <table class="w-full text-[11px] text-center border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                        <th class="p-2 text-left">Fascia Km</th>
+                                        <th class="p-2">&gt;20h</th>
+                                        <th class="p-2">15-20</th>
+                                        <th class="p-2">10-15</th>
+                                        <th class="p-2">&le;10h</th>
+                                        <th class="p-2">&lt;0</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matrix-body" class="divide-y divide-slate-200"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3: Incidentalità & Indennità Evitato Sinistri -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-800">KPI 3 • Incidentalità &amp; Evitato Sinistri</span>
+                            <span id="badge-kpi3" class="text-xs font-extrabold bg-emerald-600 text-white px-2.5 py-0.5 rounded-full">+ 30 €</span>
+                        </div>
+                        <div class="space-y-1.5" id="kpi3-options">
+                            <label class="flex items-center justify-between p-2.5 rounded-xl border-2 border-cotral-royal bg-blue-50/60 cursor-pointer kpi3-card" data-fascia="1">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="kpi3-fascia" value="1" checked onchange="calculateAll()" class="w-4 h-4 text-cotral-royal">
+                                    <span class="text-xs font-semibold text-slate-800">Nessun sinistro con colpa</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg">+ 30 €</span>
+                            </label>
+                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer kpi3-card" data-fascia="2">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="kpi3-fascia" value="2" onchange="calculateAll()" class="w-4 h-4 text-cotral-royal">
+                                    <span class="text-xs font-medium text-slate-800">1 sinistro passivo &le; 3.500 €</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-lg">- 20%</span>
+                            </label>
+                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer kpi3-card" data-fascia="3">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="kpi3-fascia" value="3" onchange="calculateAll()" class="w-4 h-4 text-cotral-royal">
+                                    <span class="text-xs font-medium text-slate-800">1 sinistro &gt; 3.500 € e &le; 5.000 €</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-lg">- 50%</span>
+                            </label>
+                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer kpi3-card" data-fascia="4">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="kpi3-fascia" value="4" onchange="calculateAll()" class="w-4 h-4 text-cotral-royal">
+                                    <span class="text-xs font-medium text-slate-800">1 sinistro &gt; 5.000 € e &le; 7.000 €</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-red-700 bg-red-100 px-2 py-0.5 rounded-lg">- 80%</span>
+                            </label>
+                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer kpi3-card" data-fascia="5">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="kpi3-fascia" value="5" onchange="calculateAll()" class="w-4 h-4 text-cotral-royal">
+                                    <span class="text-xs font-medium text-slate-800">1 sinistro passivo &gt; 7.000 €</span>
+                                </div>
+                                <span class="text-[11px] font-extrabold text-red-800 bg-red-200 px-2 py-0.5 rounded-lg">- 100%</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             TAB 2: TRIMESTRE & SEMESTRALE (Dettaglio Mese per Mese + Maturazione Welfare)
+        ========================================================== -->
+        <section id="view-semestrale" class="app-view hidden space-y-5">
+            <!-- Card Blu Riepilogo Trimestre & Maturazione Welfare -->
+            <div class="bg-cotral-royal text-white rounded-3xl p-5 shadow-lg space-y-4">
+                <div class="flex items-start justify-between gap-2">
+                    <div>
+                        <span id="sem-trim-tag" class="text-[11px] font-bold uppercase tracking-wider text-cotral-gold">2° TRIMESTRE (NOV – GEN)</span>
+                        <h2 class="text-lg font-extrabold mt-0.5">Somma Trimestre &amp; Welfare</h2>
+                        <p id="sem-period-label" class="text-xs text-blue-200 mt-0.5">Novembre 2026 – Gennaio 2027</p>
+                    </div>
+                    <span id="trim-sum-hero" class="text-2xl font-extrabold text-cotral-gold">0,00 €</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10">
+                        <span class="text-xs text-blue-100 block">Credito Welfare (&ge;139)</span>
+                        <span id="kpi4-welfare-badge" class="text-xl font-extrabold text-white mt-1 block">0,00 €</span>
+                        <span id="kpi4-welfare-sub" class="text-[11px] text-blue-200 mt-0.5 block">0 / 139 turni</span>
+                    </div>
+                    <div class="bg-cotral-card rounded-2xl p-3.5 border border-white/10">
+                        <span class="text-xs text-blue-100 block">Domeniche &amp; Festivi</span>
+                        <span id="kpi4-festivi-badge" class="text-xl font-extrabold text-cotral-gold mt-1 block">0,00 €</span>
+                        <span id="kpi4-festivi-sub" class="text-[11px] text-blue-200 mt-0.5 block">0 coperti</span>
+                    </div>
+                </div>
+
+                <!-- Barra Avanzamento Welfare 0 -> 139 -->
+                <div class="bg-cotral-darkbanner rounded-2xl p-3.5 border border-white/10 space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-semibold text-blue-100">Avanzamento Soglia Welfare (400 €)</span>
+                        <span id="kpi4-progress-text" class="font-extrabold text-cotral-gold">0 / 139 (0%)</span>
+                    </div>
+                    <div class="w-full bg-white/15 rounded-full h-2.5 overflow-hidden">
+                        <div id="kpi4-progress-bar" class="bg-cotral-gold h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p id="kpi4-missing-hint" class="text-[11px] text-blue-200">
+                        Mancano 139 turni utili per sbloccare i 400 € di Credito Welfare.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tabella Dettagliata Mese per Mese + Somma Trimestre -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-2">
+                    <div>
+                        <h3 id="trim-table-title" class="font-bold text-sm text-slate-900">Mese per Mese • 2° Trimestre (Nov – Gen)</h3>
+                        <p class="text-[11px] text-slate-500">Tocca un mese per aprirlo subito nel diario giornaliero</p>
+                    </div>
+                    <span id="badge-kpi4" class="text-xs font-extrabold bg-blue-50 text-cotral-royal px-2.5 py-1 rounded-full">0,00 €</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <th class="p-3">Mese</th>
+                                <th class="p-3 text-center">Turni</th>
+                                <th class="p-3 text-center">Ore 2bis</th>
+                                <th class="p-3 text-center">Stato</th>
+                                <th class="p-3 text-right">Premio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sem-breakdown-body" class="divide-y divide-slate-200"></tbody>
+                        <tfoot class="bg-blue-50/80 font-extrabold text-slate-900 border-t-2 border-cotral-royal/30">
+                            <tr>
+                                <td class="p-3 text-cotral-royal">Somma Trimestre</td>
+                                <td class="p-3 text-center text-cotral-royal" id="sem-tot-turni-col">0</td>
+                                <td class="p-3 text-center text-slate-700" id="sem-tot-ore-col">00:00</td>
+                                <td class="p-3 text-center text-emerald-700" id="sem-tot-fest-col">0 dom/f</td>
+                                <td class="p-3 text-right text-sm text-cotral-royal" id="sem-tot-euro-col">0,00 €</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Scaglioni Domeniche e Festivi -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Scaglioni Domeniche e Festivi</h3>
+                        <p class="text-[11px] text-slate-500">Si aggiorna automaticamente ogni volta che segni una domenica o festivo lavorato</p>
+                    </div>
+                    <span id="sem-festivi-pill" class="text-xs font-extrabold bg-blue-50 text-cotral-royal px-2.5 py-1 rounded-full">
+                        0 gg
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-5 gap-1.5 text-center text-[11px]">
+                    <div id="fest-box-0" class="p-2.5 rounded-xl border-2 border-cotral-royal bg-blue-50 font-bold">
+                        <div class="text-cotral-royal">&lt; 6</div>
+                        <div class="font-extrabold text-cotral-royal">0 €</div>
+                    </div>
+                    <div id="fest-box-1" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+                        <div class="text-slate-500">6-8</div>
+                        <div class="font-bold text-slate-800">40 €</div>
+                    </div>
+                    <div id="fest-box-2" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+                        <div class="text-slate-500">9-10</div>
+                        <div class="font-bold text-slate-800">60 €</div>
+                    </div>
+                    <div id="fest-box-3" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+                        <div class="text-slate-500">11-12</div>
+                        <div class="font-bold text-slate-800">80 €</div>
+                    </div>
+                    <div id="fest-box-4" class="p-2.5 rounded-xl border border-slate-200 bg-white">
+                        <div class="text-slate-500">&ge; 13</div>
+                        <div class="font-bold text-slate-800">100 €</div>
+                    </div>
+                </div>
+
+                <!-- Eventuale aggiunta turni/festivi pregressi non inseriti nel diario -->
+                <div class="pt-3 border-t border-slate-100 space-y-2">
+                    <span class="text-xs font-bold text-slate-700 block">Integrazione mesi pregressi non compilati (opzionale)</span>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label for="sem-offset-turni" class="text-[11px] text-slate-500 block mb-1">+ Turni utili pregressi</label>
+                            <input type="number" id="sem-offset-turni" min="0" max="180" value="0" oninput="calculateAll()" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="sem-offset-festivi" class="text-[11px] text-slate-500 block mb-1">+ Dom./Festivi pregressi</label>
+                            <input type="number" id="sem-offset-festivi" min="0" max="40" value="0" oninput="calculateAll()" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riepilogo Reale dei 6 Mesi del Semestre dal Diario -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="px-5 py-4 border-b border-slate-100">
+                    <h3 class="font-bold text-sm text-slate-900">Dettaglio Maturazione 6 Mesi</h3>
+                    <p class="text-[11px] text-slate-500">Calcolato automaticamente dai dati inseriti nel diario di ciascun mese</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <th class="p-3">Mese</th>
+                                <th class="p-3 text-center">Turni Utili</th>
+                                <th class="p-3 text-center">Dom/Fest</th>
+                                <th class="p-3 text-center">Straord.</th>
+                                <th class="p-3 text-right">Premio Mese</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sem-breakdown-body" class="divide-y divide-slate-200"></tbody>
+                        <tfoot class="bg-slate-50 font-extrabold text-slate-900 border-t-2 border-slate-300">
+                            <tr>
+                                <td class="p-3">Totale Semestre</td>
+                                <td class="p-3 text-center text-cotral-royal" id="sem-tot-turni-col">0</td>
+                                <td class="p-3 text-center text-emerald-700" id="sem-tot-fest-col">0</td>
+                                <td class="p-3 text-center text-slate-600" id="sem-tot-ore-col">00:00</td>
+                                <td class="p-3 text-right text-cotral-royal" id="sem-tot-euro-col">0,00 €</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             TAB 3: IMPOSTAZIONI (Requisiti, Esclusioni, Tabella, Reset)
+        ========================================================== -->
+        <section id="view-impostazioni" class="app-view hidden space-y-5">
+            <!-- Requisiti Aziendali -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="bg-cotral-header text-white px-5 py-3.5 flex items-center justify-between">
+                    <h2 class="font-bold text-sm">Requisiti Aziendali di Accesso</h2>
+                    <span class="text-[11px] bg-white/15 px-2.5 py-0.5 rounded-full font-semibold">Cotral</span>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-cotral-royal">Annuale</span>
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Risultato d'esercizio positivo anno precedente</h3>
+                        </div>
+                        <label class="inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" id="req-annuale" checked onchange="calculateAll()" class="sr-only peer">
+                            <div class="relative w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                            <span id="lbl-req-annuale" class="ms-2 text-xs font-extrabold text-emerald-700">SÌ</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-cotral-royal">Trimestrale</span>
+                            <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Obiettivi trimestrali aziendali raggiunti</h3>
+                            <p class="text-[11px] text-slate-500">Vett_km, Ricavi Traffico Cotral (€) e Ricavi Diretti.</p>
+                        </div>
+                        <label class="inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" id="req-trimestrale" checked onchange="calculateAll()" class="sr-only peer">
+                            <div class="relative w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                            <span id="lbl-req-trimestrale" class="ms-2 text-xs font-extrabold text-emerald-700">SÌ</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cause di Esclusione & Override Manuali -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200/90 overflow-hidden">
+                <div class="bg-red-800 text-white px-5 py-3.5 flex items-center justify-between">
+                    <h2 class="font-bold text-sm">Verifiche Esclusioni &amp; Sinistri Trimestre</h2>
+                    <span class="text-[11px] bg-white/15 px-2.5 py-0.5 rounded-full font-semibold">Auto + Manuale</span>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                        <label for="excl-disciplinare" class="text-xs font-bold text-slate-800 block">Disciplinare art. 42 &gt; 1 giorno (esclusi sinistri)</label>
+                        <select id="excl-disciplinare" onchange="calculateAll()" class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800">
+                            <option value="no" selected>No</option>
+                            <option value="si">Sì (Escluso)</option>
+                        </select>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                        <span class="text-xs font-bold text-slate-800 block">Sinistri nel trimestre con colpa (&gt; 1 E &gt; 7.000 €)</span>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div>
+                                <label for="excl-sinistri-num" class="text-[11px] text-slate-500 block mb-1">N. Sinistri</label>
+                                <input type="number" id="excl-sinistri-num" min="0" max="20" value="0" oninput="calculateAll()" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-sm font-bold text-slate-800">
+                            </div>
+                            <div>
+                                <label for="excl-sinistri-valore" class="text-[11px] text-slate-500 block mb-1">Valore (€)</label>
+                                <input type="number" id="excl-sinistri-valore" min="0" step="100" value="0" oninput="calculateAll()" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-sm font-bold text-slate-800">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs text-slate-700 space-y-1">
+                        <p class="font-bold text-cotral-header">Conteggi automatici dal diario del mese:</p>
+                        <p id="settings-auto-summary">Turni esigibili: 0 • Turni utili: 0 • Malattia: 0 gg (0 ev.) • Cumulo assenze: 0 / 3</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Azioni Tabella Ufficiale e Reset -->
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="openModal('modal-tabella')" class="bg-cotral-royal hover:bg-cotral-header text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-sm transition flex items-center justify-center gap-2">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <span>Tabella Ufficiale</span>
+                </button>
+                <button type="button" onclick="resetAll()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-sm transition flex items-center justify-center gap-2">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <span>Reset Dati</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 4. BOTTOM NAVIGATION BAR FISSA INFERIORE (3 TAB) -->
+    <nav aria-label="Navigazione principale" class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 shadow-[0_-4px_16px_rgba(15,23,42,0.06)] z-40">
+        <div class="max-w-xl mx-auto grid grid-cols-3 h-16">
+            <button type="button" onclick="switchAppView('view-giornaliero')" id="nav-view-giornaliero" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 text-cotral-royal font-bold transition">
+                <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                <span class="text-[11px]">Giornaliero</span>
+            </button>
+
+            <button type="button" onclick="switchAppView('view-semestrale')" id="nav-view-semestrale" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-semibold transition">
+                <i data-lucide="award" class="w-5 h-5"></i>
+                <span class="text-[11px]">Trimestre &amp; Sem.</span>
+            </button>
+
+            <button type="button" onclick="switchAppView('view-impostazioni')" id="nav-view-impostazioni" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-semibold transition">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+                <span class="text-[11px]">Impostazioni</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODALE TABELLA UFFICIALE -->
+    <div id="modal-tabella" role="dialog" aria-modal="true" aria-labelledby="modal-tabella-title" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[88vh] flex flex-col overflow-hidden">
+            <div class="bg-cotral-header text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                    <h3 id="modal-tabella-title" class="font-bold text-sm sm:text-base">Tabella Analitica KPI - Operatori di Esercizio</h3>
+                </div>
+                <button type="button" onclick="closeModal('modal-tabella')" aria-label="Chiudi modale" class="text-white/80 hover:text-white p-1 rounded-xl">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-5 overflow-y-auto space-y-4 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-cotral-header mb-1">Requisiti Aziendali</h4>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            <li><strong>Annuale:</strong> Bilancio positivo anno precedente.</li>
+                            <li><strong>Trimestrale:</strong> Vett_km, Ricavi Traffico Cotral e Ricavi Diretti vs baseline.</li>
+                        </ul>
+                    </div>
+                    <div class="p-3.5 bg-red-50 rounded-2xl border border-red-200">
+                        <h4 class="font-bold text-red-800 mb-1">Cause di Esclusione</h4>
+                        <ul class="list-disc list-inside space-y-1 text-red-900">
+                            <li>Disciplinare art. 42 &gt; 1 giorno (esclusi sinistri).</li>
+                            <li>Malattia &gt; 1 evento o &gt; 5 giorni nel mese.</li>
+                            <li>Giorni/turni coperti &lt; 6/mese (con 22 = 0 € premio).</li>
+                            <li>Turni + Congedi + Formazione + Collegio &lt; 22/mese.</li>
+                            <li>Sinistri trimestre: &gt; 1 con colpa E valore &gt; 7.000 €.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <table class="w-full text-xs border border-slate-300 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-200 font-bold">
+                            <tr><th colspan="3" class="p-2 text-left">1) Regolarità Servizio</th></tr>
+                            <tr class="bg-slate-100"><th class="p-1.5 border">Fascia</th><th class="p-1.5 border">Target</th><th class="p-1.5 border">Premio</th></tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr><td class="p-1.5 border">1</td><td class="p-1.5 border">&ge; 100%</td><td class="p-1.5 border font-bold">50 €</td></tr>
+                            <tr><td class="p-1.5 border">2</td><td class="p-1.5 border">99,00% - 99,99%</td><td class="p-1.5 border font-bold">30 €</td></tr>
+                            <tr><td class="p-1.5 border">3</td><td class="p-1.5 border">98,00% - 98,99%</td><td class="p-1.5 border font-bold">10 €</td></tr>
+                            <tr><td class="p-1.5 border">4</td><td class="p-1.5 border">&lt; 98%</td><td class="p-1.5 border font-bold">0 €</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table class="w-full text-xs border border-slate-300 rounded-xl overflow-hidden">
+                        <thead class="bg-slate-200 font-bold">
+                            <tr><th colspan="3" class="p-2 text-left">2) Produttività / Fascia Km</th></tr>
+                            <tr class="bg-slate-100"><th class="p-1.5 border">Fascia</th><th class="p-1.5 border">Target</th><th class="p-1.5 border">Base</th></tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr><td class="p-1.5 border">1</td><td class="p-1.5 border">&ge; 25</td><td class="p-1.5 border font-bold">85 €</td></tr>
+                            <tr><td class="p-1.5 border">2</td><td class="p-1.5 border">24</td><td class="p-1.5 border font-bold">60 €</td></tr>
+                            <tr><td class="p-1.5 border">3</td><td class="p-1.5 border">23</td><td class="p-1.5 border font-bold">45 €</td></tr>
+                            <tr><td class="p-1.5 border">4</td><td class="p-1.5 border">&lt; 23</td><td class="p-1.5 border font-bold">0 €</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <table class="w-full text-xs border border-slate-300 text-center">
+                    <thead class="bg-slate-200 font-bold">
+                        <tr><th colspan="6" class="p-2 text-left">2bis) Moltiplicatore Eccedenza</th></tr>
+                        <tr class="bg-slate-100">
+                            <th class="p-1.5 border">Fascia KPI 2</th>
+                            <th class="p-1.5 border">&gt; 20 ore</th>
+                            <th class="p-1.5 border">&gt; 15 &le; 20</th>
+                            <th class="p-1.5 border">&gt; 10 &le; 15</th>
+                            <th class="p-1.5 border">&le; 10</th>
+                            <th class="p-1.5 border">&lt; 0</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="p-1.5 border font-bold">1</td><td class="p-1.5 border">1,9</td><td class="p-1.5 border">1,7</td><td class="p-1.5 border">1,5</td><td class="p-1.5 border">1,0</td><td class="p-1.5 border">0,0</td></tr>
+                        <tr><td class="p-1.5 border font-bold">2</td><td class="p-1.5 border">2,3</td><td class="p-1.5 border">2,0</td><td class="p-1.5 border">1,7</td><td class="p-1.5 border">1,0</td><td class="p-1.5 border">0,0</td></tr>
+                        <tr><td class="p-1.5 border font-bold">3</td><td class="p-1.5 border">2,6</td><td class="p-1.5 border">2,3</td><td class="p-1.5 border">1,9</td><td class="p-1.5 border">1,0</td><td class="p-1.5 border">0,0</td></tr>
+                        <tr><td class="p-1.5 border font-bold">4</td><td class="p-1.5 border">0,0</td><td class="p-1.5 border">0,0</td><td class="p-1.5 border">0,0</td><td class="p-1.5 border">0,0</td><td class="p-1.5 border">0,0</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <table class="w-full text-xs border border-slate-300">
+                        <thead class="bg-slate-200 font-bold">
+                            <tr><th colspan="3" class="p-2 text-left">3) Incidentalità con colpa</th></tr>
+                            <tr class="bg-slate-100"><th class="p-1.5 border">Fascia</th><th class="p-1.5 border">Condizione</th><th class="p-1.5 border">Effetto</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="p-1.5 border text-center">1</td><td class="p-1.5 border">Nessun incidente</td><td class="p-1.5 border text-center font-bold text-emerald-700">+ 30 €</td></tr>
+                            <tr><td class="p-1.5 border text-center">2</td><td class="p-1.5 border">1 sinistro &le; 3.500 €</td><td class="p-1.5 border text-center font-bold text-red-600">- 20%</td></tr>
+                            <tr><td class="p-1.5 border text-center">3</td><td class="p-1.5 border">1 sinistro &gt; 3.500 &le; 5.000 €</td><td class="p-1.5 border text-center font-bold text-red-600">- 50%</td></tr>
+                            <tr><td class="p-1.5 border text-center">4</td><td class="p-1.5 border">1 sinistro &gt; 5.000 &le; 7.000 €</td><td class="p-1.5 border text-center font-bold text-red-600">- 80%</td></tr>
+                            <tr><td class="p-1.5 border text-center">5</td><td class="p-1.5 border">1 sinistro &gt; 7.000 €</td><td class="p-1.5 border text-center font-bold text-red-600">- 100%</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table class="w-full text-xs border border-slate-300">
+                        <thead class="bg-slate-200 font-bold">
+                            <tr><th colspan="3" class="p-2 text-left">4) BONUS Semestrale</th></tr>
+                            <tr class="bg-slate-100"><th class="p-1.5 border">Voce</th><th class="p-1.5 border">Target</th><th class="p-1.5 border">Premio</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="p-1.5 border">Welfare (Turni+Cong+Form+Coll)</td><td class="p-1.5 border text-center">&ge; 139</td><td class="p-1.5 border text-center font-bold">400 €</td></tr>
+                            <tr><td class="p-1.5 border" rowspan="4">Domeniche e Festivi</td><td class="p-1.5 border text-center">6 - 8</td><td class="p-1.5 border text-center font-bold">40 €</td></tr>
+                            <tr><td class="p-1.5 border text-center">9 - 10</td><td class="p-1.5 border text-center font-bold">60 €</td></tr>
+                            <tr><td class="p-1.5 border text-center">11 - 12</td><td class="p-1.5 border text-center font-bold">80 €</td></tr>
+                            <tr><td class="p-1.5 border text-center">&ge; 13</td><td class="p-1.5 border text-center font-bold">100 €</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-slate-100 px-5 py-3 flex justify-end border-t border-slate-200">
+                <button type="button" onclick="closeModal('modal-tabella')" class="bg-cotral-royal text-white text-xs font-bold px-5 py-2 rounded-xl hover:bg-cotral-header transition">Chiudi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICA -->
+    <div id="toast" role="status" aria-live="polite" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transform translate-y-12 opacity-0 transition-all duration-300 z-50 flex items-center gap-2 whitespace-nowrap">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toast-msg">Operazione completata</span>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'cotral_pdr_state_v12';
+
+        const MULTIPLIER_MATRIX = [
+            [1.9, 1.7, 1.5, 1.0, 0.0],
+            [2.3, 2.0, 1.7, 1.0, 0.0],
+            [2.6, 2.3, 1.9, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0]
+        ];
+
+        const FASCIA2_SHORT_LABELS = [
+            "F1 (≥25) 85€",
+            "F2 (24) 60€",
+            "F3 (23) 45€",
+            "F4 (<23) 0€"
+        ];
+
+        const MONTH_NAMES_IT = [
+            "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+            "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+        ];
+
+        // 4 Trimestri ufficiali richiesti:
+        // 1°: Agosto - Ottobre (mesi 7, 8, 9 in 0-based)
+        // 2°: Novembre - Gennaio (mesi 10, 11 in anno base, 0 in anno base + 1)
+        // 3°: Febbraio - Aprile (mesi 1, 2, 3 in 0-based)
+        // 4°: Maggio - Luglio (mesi 4, 5, 6 in 0-based)
+        const TRIMESTRI_DEF = {
+            1: {
+                id: 1,
+                shortTitle: "1° TRIMESTRE • AGO – OTT",
+                label: "1° Trimestre (Agosto – Ottobre)",
+                getMonths: (baseYear) => [
+                    { year: baseYear, month: 7 },
+                    { year: baseYear, month: 8 },
+                    { year: baseYear, month: 9 }
+                ]
+            },
+            2: {
+                id: 2,
+                shortTitle: "2° TRIMESTRE • NOV – GEN",
+                label: "2° Trimestre (Novembre – Gennaio)",
+                getMonths: (baseYear) => [
+                    { year: baseYear, month: 10 },
+                    { year: baseYear, month: 11 },
+                    { year: baseYear + 1, month: 0 }
+                ]
+            },
+            3: {
+                id: 3,
+                shortTitle: "3° TRIMESTRE • FEB – APR",
+                label: "3° Trimestre (Febbraio – Aprile)",
+                getMonths: (baseYear) => [
+                    { year: baseYear, month: 1 },
+                    { year: baseYear, month: 2 },
+                    { year: baseYear, month: 3 }
+                ]
+            },
+            4: {
+                id: 4,
+                shortTitle: "4° TRIMESTRE • MAG – LUG",
+                label: "4° Trimestre (Maggio – Luglio)",
+                getMonths: (baseYear) => [
+                    { year: baseYear, month: 4 },
+                    { year: baseYear, month: 5 },
+                    { year: baseYear, month: 6 }
+                ]
+            }
+        };
+
+        const WEEKDAY_NAMES_SHORT = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
+
+        const ESIGIBILE_ACTIVITIES = new Set(["lavorativo", "distacco_aziendale"]);
+        const UTILE_ACTIVITIES = new Set(["lavorativo", "distacco_aziendale", "congedo", "formazione", "collegio"]);
+        const NON_ESIGIBILE_ACTIVITIES = new Set(["recupero_riposo", "distacco_sindacale", "assenza_non_esigibile"]);
+        const ASSENZA_CUMULO_ACTIVITIES = new Set(["malattia", "congedo", "legge_104", "recupero_riposo", "distacco_sindacale", "assenza_non_esigibile"]);
+
+        let calendarEntries = {};
+        let selectedYear = 2026;
+        let selectedMonth = 10; // Novembre
+        let selectedTrimestre = 2; // 2° Trimestre: Nov - Gen
+        let expandedDay = 1;
+
+        function detectTrimestreFromMonth(monthIndex) {
+            if (monthIndex >= 7 && monthIndex <= 9) return 1; // Ago - Ott
+            if (monthIndex === 10 || monthIndex === 11 || monthIndex === 0) return 2; // Nov - Gen
+            if (monthIndex >= 1 && monthIndex <= 3) return 3; // Feb - Apr
+            return 4; // Mag - Lug
+        }
+
+        function getTrimestreBaseYear(trimId, year, monthIndex) {
+            // Se siamo in Gennaio (mese 0) e nel 2° Trimestre (Nov - Gen), l'anno base del trimestre è year - 1
+            if (trimId === 2 && monthIndex === 0) {
+                return year - 1;
+            }
+            return year;
+        }
+
+        function getActiveTrimestreMonths() {
+            const def = TRIMESTRI_DEF[selectedTrimestre] || TRIMESTRI_DEF[2];
+            const baseYear = getTrimestreBaseYear(def.id, selectedYear, selectedMonth);
+            return def.getMonths(baseYear);
+        }
+
+        function populateMonthSelector() {
+            const sel = document.getElementById('month-year-selector');
+            const years = [2025, 2026, 2027];
+            let html = '';
+            years.forEach(y => {
+                MONTH_NAMES_IT.forEach((mName, mIdx) => {
+                    const val = `${y}-${mIdx}`;
+                    const label = `${mName.slice(0, 3)} ${y}`;
+                    html += `<option value="${val}">${label}</option>`;
+                });
+            });
+            sel.innerHTML = html;
+            sel.value = `${selectedYear}-${selectedMonth}`;
+        }
+
+        function renderQuarterMonthPills() {
+            const container = document.getElementById('quarter-month-pills');
+            const months = getActiveTrimestreMonths();
+            let html = '';
+
+            months.forEach((item, idx) => {
+                const isActive = (item.year === selectedYear && item.month === selectedMonth);
+                const shortM = MONTH_NAMES_IT[item.month].slice(0, 3);
+                const cls = isActive
+                    ? "bg-cotral-royal text-white border-cotral-royal shadow-xs"
+                    : "bg-slate-100 hover:bg-blue-50 text-slate-700 border-slate-200";
+                html += `
+                    <button type="button" onclick="selectMonthFromTrimestre(${item.year}, ${item.month})" class="px-2 py-1.5 rounded-xl border text-[11px] font-extrabold transition truncate ${cls}">
+                        ${idx + 1}. ${shortM} '${String(item.year).slice(-2)}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function onTrimestreSelectChange() {
+            const tId = parseInt(document.getElementById('trimestre-selector').value, 10) || 2;
+            selectedTrimestre = tId;
+
+            const def = TRIMESTRI_DEF[selectedTrimestre] || TRIMESTRI_DEF[2];
+            const baseYear = getTrimestreBaseYear(selectedTrimestre, selectedYear, selectedMonth);
+            const months = def.getMonths(baseYear);
+
+            // Se il mese attualmente selezionato non appartiene al nuovo trimestre, passa al primo mese del trimestre
+            const belongs = months.some(m => m.year === selectedYear && m.month === selectedMonth);
+            if (!belongs) {
+                selectedYear = months[0].year;
+                selectedMonth = months[0].month;
+                document.getElementById('month-year-selector').value = `${selectedYear}-${selectedMonth}`;
+            }
+
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            if (expandedDay > daysInMonth) expandedDay = 1;
+
+            updateMonthLabelsUI();
+            renderQuarterMonthPills();
+            renderMonthlyTable();
+            calculateAll();
+        }
+
+        function selectMonthFromTrimestre(year, monthIndex) {
+            selectedYear = year;
+            selectedMonth = monthIndex;
+            selectedTrimestre = detectTrimestreFromMonth(monthIndex);
+
+            document.getElementById('trimestre-selector').value = String(selectedTrimestre);
+            document.getElementById('month-year-selector').value = `${selectedYear}-${selectedMonth}`;
+
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            if (expandedDay > daysInMonth) expandedDay = 1;
+
+            updateMonthLabelsUI();
+            renderQuarterMonthPills();
+            renderMonthlyTable();
+            calculateAll();
+            switchAppView('view-giornaliero');
+        }
+
+        function updateMonthLabelsUI() {
+            const mName = MONTH_NAMES_IT[selectedMonth];
+            document.getElementById('header-month-pill').textContent = `${mName} ${selectedYear}`;
+            document.getElementById('card-month-badge').innerHTML = `${mName.toUpperCase()}<br>${selectedYear}`;
+        }
+
+        function onCombinedMonthChange() {
+            const val = document.getElementById('month-year-selector').value;
+            const [yStr, mStr] = val.split('-');
+            selectedYear = parseInt(yStr, 10);
+            selectedMonth = parseInt(mStr, 10);
+            selectedTrimestre = detectTrimestreFromMonth(selectedMonth);
+            document.getElementById('trimestre-selector').value = String(selectedTrimestre);
+
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            if (expandedDay > daysInMonth) expandedDay = 1;
+
+            updateMonthLabelsUI();
+            renderQuarterMonthPills();
+            renderMonthlyTable();
+            calculateAll();
+        }
+
+        function is31DaysWith4Sundays(year, monthIndex) {
+            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+            if (daysInMonth !== 31) return false;
+            let sundays = 0;
+            for (let d = 1; d <= 31; d++) {
+                if (new Date(year, monthIndex, d).getDay() === 0) sundays++;
+            }
+            return sundays === 4;
+        }
+
+        function getMaxAssenzeAllowed(year, monthIndex) {
+            return is31DaysWith4Sundays(year, monthIndex) ? 4 : 3;
+        }
+
+        function parseSexagesimalToMinutes(raw) {
+            if (raw === null || raw === undefined) return 0;
+            const str = String(raw).trim();
+            if (!str) return 0;
+
+            const negative = str.startsWith('-');
+            const clean = str.replace(/^-/, '').replace(/\s+/g, '');
+
+            const hmMatch = clean.match(/^(?:(\d+)h)?(?:(\d+)m)?$/i);
+            if (hmMatch && (hmMatch[1] || hmMatch[2])) {
+                const h = parseInt(hmMatch[1] || '0', 10);
+                const m = parseInt(hmMatch[2] || '0', 10);
+                const total = h * 60 + m;
+                return negative ? -total : total;
+            }
+
+            if (clean.includes(':') || clean.includes('.')) {
+                const parts = clean.split(/[:.]/);
+                const h = parseInt(parts[0] || '0', 10) || 0;
+                const mRaw = (parts[1] || '0').padEnd(2, '0').slice(0, 2);
+                const m = parseInt(mRaw, 10) || 0;
+                const total = h * 60 + m;
+                return negative ? -total : total;
+            }
+
+            const num = parseInt(clean, 10) || 0;
+            if (Math.abs(num) >= 100) {
+                const absNum = Math.abs(num);
+                const h = Math.floor(absNum / 100);
+                const m = absNum % 100;
+                const total = h * 60 + m;
+                return negative ? -total : total;
+            }
+
+            return negative ? -Math.abs(num) : num;
+        }
+
+        function formatMinutesToSexagesimal(totalMinutes) {
+            const sign = totalMinutes < 0 ? '-' : '';
+            const absMin = Math.abs(Math.round(totalMinutes));
+            const h = Math.floor(absMin / 60);
+            const m = absMin % 60;
+            return `${sign}${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+
+        function formatMinutesToCardBadge(totalMinutes) {
+            const sign = totalMinutes >= 0 ? '+' : '-';
+            const absMin = Math.abs(Math.round(totalMinutes));
+            const h = Math.floor(absMin / 60);
+            const m = absMin % 60;
+            return `${sign}${h}h ${String(m).padStart(2, '0')}m`;
+        }
+
+        function getEasterDate(year) {
+            const a = year % 19;
+            const b = Math.floor(year / 100);
+            const c = year % 100;
+            const d = Math.floor(b / 4);
+            const e = b % 4;
+            const f = Math.floor((b + 8) / 25);
+            const g = Math.floor((b - f + 1) / 3);
+            const h = (19 * a + b - d - g + 15) % 30;
+            const i = Math.floor(c / 4);
+            const k = c % 4;
+            const l = (32 + 2 * e + 2 * i - h - k) % 7;
+            const m = Math.floor((a + 11 * h + 22 * l) / 451);
+            const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+            const day = ((h + l - 7 * m + 114) % 31) + 1;
+            return new Date(year, month, day);
+        }
+
+        function getItalianHolidayName(year, monthIndex, day) {
+            const fixed = {
+                "0-1": "Capodanno",
+                "0-6": "Epifania",
+                "3-25": "Festa della Liberazione",
+                "4-1": "Festa del Lavoro",
+                "5-2": "Festa della Repubblica",
+                "7-15": "Ferragosto",
+                "10-1": "Tutti i Santi",
+                "11-8": "Immacolata Concezione",
+                "11-25": "Natale",
+                "11-26": "Santo Stefano"
+            };
+            const key = `${monthIndex}-${day}`;
+            if (fixed[key]) return fixed[key];
+
+            const easter = getEasterDate(year);
+            const easterMonday = new Date(year, easter.getMonth(), easter.getDate() + 1);
+
+            if (easter.getMonth() === monthIndex && easter.getDate() === day) return "Pasqua";
+            if (easterMonday.getMonth() === monthIndex && easterMonday.getDate() === day) return "Lunedì dell'Angelo";
+
+            return null;
+        }
+
+        function formatEuro(val) {
+            return val.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('translate-y-12', 'opacity-0');
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-12', 'opacity-0');
+            }, 2400);
+        }
+
+        function switchAppView(viewId) {
+            document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+
+            document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
+                btn.classList.remove('text-cotral-royal', 'font-bold');
+                btn.classList.add('text-slate-400', 'font-semibold');
+            });
+
+            const activeBtn = document.getElementById('nav-' + viewId);
+            activeBtn.classList.add('text-cotral-royal', 'font-bold');
+            activeBtn.classList.remove('text-slate-400', 'font-semibold');
+
+            calculateAll(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal('modal-tabella');
+        });
+
+        function onKpi1PercentChange() {
+            const pct = parseFloat(document.getElementById('kpi1-percent').value) || 0;
+            let fascia = "4";
+            if (pct >= 100) fascia = "1";
+            else if (pct >= 99.00) fascia = "2";
+            else if (pct >= 98.00) fascia = "3";
+            document.getElementById('kpi1-fascia').value = fascia;
+            calculateAll();
+        }
+
+        function onKpi1FasciaChange() {
+            const fascia = document.getElementById('kpi1-fascia').value;
+            const pctInput = document.getElementById('kpi1-percent');
+            if (fascia === "1") pctInput.value = "100.00";
+            else if (fascia === "2") pctInput.value = "99.50";
+            else if (fascia === "3") pctInput.value = "98.50";
+            else pctInput.value = "97.00";
+            calculateAll();
+        }
+
+        function getKpi2Data(turniTotali) {
+            if (turniTotali >= 25) return { rowIdx: 0, base: 85, cardLabel: "Fascia 1 (85€)" };
+            if (turniTotali === 24) return { rowIdx: 1, base: 60, cardLabel: "Fascia 2 (60€)" };
+            if (turniTotali === 23) return { rowIdx: 2, base: 45, cardLabel: "Fascia 3 (45€)" };
+            return { rowIdx: 3, base: 0, cardLabel: "Fascia 4 (0€)" };
+        }
+
+        function getKpi2bisData(rowIdx, oreEccedenzaDecimal) {
+            let colIdx = 3;
+            if (oreEccedenzaDecimal > 20) colIdx = 0;
+            else if (oreEccedenzaDecimal > 15) colIdx = 1;
+            else if (oreEccedenzaDecimal > 10) colIdx = 2;
+            else if (oreEccedenzaDecimal >= 0) colIdx = 3;
+            else colIdx = 4;
+
+            const multiplier = MULTIPLIER_MATRIX[rowIdx][colIdx];
+            return { colIdx, multiplier };
+        }
+
+        function computeMonthlyAward({ kpi1Premio, turniCoperti, turniTotali, oreEccedenzaDecimal, kpi3Fascia, isExcluded, reqAnnuale, reqTrimestrale }) {
+            const kpi2 = getKpi2Data(turniTotali);
+            const kpi2bis = getKpi2bisData(kpi2.rowIdx, oreEccedenzaDecimal);
+            const kpi2Total = kpi2.base * kpi2bis.multiplier;
+            const subtotal = kpi1Premio + kpi2Total;
+
+            const indennitaEvitatoSinistri = (kpi3Fascia === 1) ? 30 : 0;
+
+            let kpi3Delta = 0;
+            let netBeforeExclusion = 0;
+
+            if (kpi3Fascia === 1) {
+                kpi3Delta = 30;
+                netBeforeExclusion = subtotal + 30;
+            } else if (kpi3Fascia === 2) {
+                kpi3Delta = -(subtotal * 0.20);
+                netBeforeExclusion = subtotal * 0.80;
+            } else if (kpi3Fascia === 3) {
+                kpi3Delta = -(subtotal * 0.50);
+                netBeforeExclusion = subtotal * 0.50;
+            } else if (kpi3Fascia === 4) {
+                kpi3Delta = -(subtotal * 0.80);
+                netBeforeExclusion = subtotal * 0.20;
+            } else {
+                kpi3Delta = -subtotal;
+                netBeforeExclusion = 0;
+            }
+
+            const noAwardFor22Days = (turniCoperti === 22 || turniTotali === 22);
+            const blockedByCompany = !reqAnnuale || !reqTrimestrale;
+            const net = (isExcluded || blockedByCompany || noAwardFor22Days) ? 0 : Math.max(0, netBeforeExclusion);
+
+            return {
+                kpi2Base: kpi2.base,
+                kpi2RowIdx: kpi2.rowIdx,
+                kpi2CardLabel: kpi2.cardLabel,
+                kpi2bisColIdx: kpi2bis.colIdx,
+                multiplier: kpi2bis.multiplier,
+                kpi2Total,
+                indennitaEvitatoSinistri,
+                noAwardFor22Days,
+                kpi3Delta,
+                net
+            };
+        }
+
+        // =========================================================================
+        // CALCOLO AUTOMATICO DAI GIORNI DEL MESE E MATURAZIONE WELFARE SEMESTRALE
+        // =========================================================================
+        function getDateKey(year, monthIndex, day) {
+            return `${year}-${monthIndex}-${day}`;
+        }
+
+        function getDefaultEntry() {
+            return {
+                activity: "nessuna",
+                dayType: "auto",
+                turnoVettura: "",
+                durataTurno: "",
+                durataStraordinario: ""
+            };
+        }
+
+        function getEffectiveDayType(year, monthIndex, day, entry) {
+            const forced = entry?.dayType || "auto";
+            if (forced !== "auto") return forced;
+
+            const d = new Date(year, monthIndex, day);
+            const dow = d.getDay();
+            const holidayName = getItalianHolidayName(year, monthIndex, day);
+
+            if (holidayName) return "festivo";
+            if (dow === 0) return "domenica";
+            if (dow === 6) return "sabato";
+            return "feriale";
+        }
+
+        function getMonthCalendarStats(year, monthIndex) {
+            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+            let turniEsigibili = 0;
+            let turniUtili = 0;
+            let domFestiviCoperti = 0;
+            let malattiaGiorni = 0;
+            let malattiaEventi = 0;
+            let prevWasMalattia = false;
+            let cumuloAssenze = 0;
+            let durataTurnoMinuti = 0;
+            let straordinarioMinuti = 0;
+            let hasDisciplinare = false;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const entry = { ...getDefaultEntry(), ...(calendarEntries[getDateKey(year, monthIndex, day)] || {}) };
+                const type = getEffectiveDayType(year, monthIndex, day, entry);
+                const act = entry.activity;
+
+                if (act === "lavorativo" && (type === "domenica" || type === "festivo")) {
+                    domFestiviCoperti++;
+                }
+
+                const isFestivoDay = (type === "festivo");
+                if (ESIGIBILE_ACTIVITIES.has(act) || (isFestivoDay && !NON_ESIGIBILE_ACTIVITIES.has(act) && act !== "malattia")) {
+                    turniEsigibili++;
+                }
+
+                if (UTILE_ACTIVITIES.has(act) || (isFestivoDay && !NON_ESIGIBILE_ACTIVITIES.has(act) && act !== "malattia")) {
+                    turniUtili++;
+                }
+
+                if (ASSENZA_CUMULO_ACTIVITIES.has(act)) {
+                    cumuloAssenze++;
+                }
+
+                if (act === "disciplinare") {
+                    hasDisciplinare = true;
+                }
+
+                if (act === "malattia") {
+                    malattiaGiorni++;
+                    if (!prevWasMalattia) malattiaEventi++;
+                    prevWasMalattia = true;
+                } else {
+                    prevWasMalattia = false;
+                }
+
+                durataTurnoMinuti += parseSexagesimalToMinutes(entry.durataTurno);
+                straordinarioMinuti += parseSexagesimalToMinutes(entry.durataStraordinario);
+            }
+
+            return {
+                turniEsigibili,
+                turniUtili,
+                domFestiviCoperti,
+                malattiaGiorni,
+                malattiaEventi,
+                cumuloAssenze,
+                hasDisciplinare,
+                durataTurnoMinuti,
+                straordinarioMinuti,
+                totaleMinuti: durataTurnoMinuti + straordinarioMinuti
+            };
+        }
+
+        function getSemesterRange(year, monthIndex) {
+            const def = TRIMESTRI_DEF[selectedTrimestre] || TRIMESTRI_DEF[2];
+            const months = getActiveTrimestreMonths();
+            const firstM = months[0];
+            const lastM = months[months.length - 1];
+            return {
+                trimTag: def.shortTitle,
+                tableTitle: `Mese per Mese • ${def.label}`,
+                label: `${MONTH_NAMES_IT[firstM.month]} ${firstM.year} – ${MONTH_NAMES_IT[lastM.month]} ${lastM.year}`,
+                months
+            };
+        }
+
+        function calculateAll(shouldSave = true) {
+            const reqAnnuale = document.getElementById('req-annuale').checked;
+            const reqTrimestrale = document.getElementById('req-trimestrale').checked;
+
+            const lblAnn = document.getElementById('lbl-req-annuale');
+            lblAnn.textContent = reqAnnuale ? "SÌ" : "NO";
+            lblAnn.className = reqAnnuale ? "ms-2 text-xs font-extrabold text-emerald-700" : "ms-2 text-xs font-extrabold text-red-600";
+
+            const lblTrim = document.getElementById('lbl-req-trimestrale');
+            lblTrim.textContent = reqTrimestrale ? "SÌ" : "NO";
+            lblTrim.className = reqTrimestrale ? "ms-2 text-xs font-extrabold text-emerald-700" : "ms-2 text-xs font-extrabold text-red-600";
+
+            // 1. Legge in tempo reale tutti i conteggi dal diario del mese corrente
+            const monthStats = getMonthCalendarStats(selectedYear, selectedMonth);
+
+            // Aggiorna contatori ore sessagesimali nella sezione giornaliera
+            document.getElementById('cal-stat-durata-turni').textContent = formatMinutesToSexagesimal(monthStats.durataTurnoMinuti);
+            document.getElementById('cal-stat-straord').textContent = formatMinutesToSexagesimal(monthStats.straordinarioMinuti);
+            document.getElementById('cal-stat-tot-ore').textContent = formatMinutesToSexagesimal(monthStats.totaleMinuti);
+
+            const has31And4Sun = is31DaysWith4Sundays(selectedYear, selectedMonth);
+            const maxAssenze = getMaxAssenzeAllowed(selectedYear, selectedMonth);
+
+            const turniEsigibili = monthStats.turniEsigibili;
+            const turniTotali = monthStats.turniUtili;
+            const malEventi = monthStats.malattiaEventi;
+            const malGiorni = monthStats.malattiaGiorni;
+            const cumuloAssenze = monthStats.cumuloAssenze;
+            const oreEccedenzaDecimal = monthStats.straordinarioMinuti / 60;
+
+            document.getElementById('settings-auto-summary').textContent =
+                `Turni esigibili: ${turniEsigibili} • Turni utili: ${turniTotali} • Malattia: ${malGiorni} gg (${malEventi} ev.) • Cumulo assenze: ${cumuloAssenze} / ${maxAssenze}`;
+
+            // 2. Verifica esclusioni
+            const exclusionReasons = [];
+            if (!reqAnnuale) exclusionReasons.push("Bilancio aziendale anno precedente non positivo.");
+            if (!reqTrimestrale) exclusionReasons.push("Obiettivi trimestrali aziendali non raggiunti.");
+
+            if (document.getElementById('excl-disciplinare').value === 'si') {
+                exclusionReasons.push("Disciplinare art. 42 > 1 giorno.");
+            }
+            if (malEventi > 1) exclusionReasons.push(`Eventi di malattia nel mese: ${malEventi} (da 2 eventi escluso).`);
+            if (malGiorni > 5) exclusionReasons.push(`Giorni di malattia nel mese: ${malGiorni} (max 5 giorni).`);
+            if (cumuloAssenze > maxAssenze) {
+                exclusionReasons.push(`Cumulo assenze (${cumuloAssenze}) supera il limite di ${maxAssenze} giorni.`);
+            }
+            if (turniEsigibili < 6) exclusionReasons.push(`Turni esigibili coperti: ${turniEsigibili} (minimo 6 nel mese).`);
+            if (turniTotali < 22) exclusionReasons.push(`Turni utili maturati: ${turniTotali} / 22 minimi per accedere al premio.`);
+
+            const sinistriNum = parseInt(document.getElementById('excl-sinistri-num').value, 10) || 0;
+            const sinistriVal = parseFloat(document.getElementById('excl-sinistri-valore').value) || 0;
+            if (sinistriNum > 1 && sinistriVal > 7000) {
+                exclusionReasons.push(`Sinistri trimestre > 1 (${sinistriNum}) e valore > 7.000 € (${formatEuro(sinistriVal)}).`);
+            }
+
+            const isExcluded = exclusionReasons.length > 0;
+
+            const kpi1Fascia = document.getElementById('kpi1-fascia').value;
+            const kpi1Premio = kpi1Fascia === "1" ? 50 : kpi1Fascia === "2" ? 30 : kpi1Fascia === "3" ? 10 : 0;
+            document.getElementById('badge-kpi1').textContent = kpi1Premio + " €";
+
+            const kpi3Radio = document.querySelector('input[name="kpi3-fascia"]:checked');
+            const kpi3Fascia = kpi3Radio ? parseInt(kpi3Radio.value, 10) : 1;
+
+            document.querySelectorAll('.kpi3-card').forEach(card => {
+                if (Number(card.dataset.fascia) === kpi3Fascia) {
+                    card.classList.add('border-2', 'border-cotral-royal', 'bg-blue-50/60');
+                    card.classList.remove('border', 'border-slate-200', 'bg-white');
+                } else {
+                    card.classList.remove('border-2', 'border-cotral-royal', 'bg-blue-50/60');
+                    card.classList.add('border', 'border-slate-200', 'bg-white');
+                }
+            });
+
+            const calc = computeMonthlyAward({
+                kpi1Premio,
+                turniCoperti: turniEsigibili,
+                turniTotali,
+                oreEccedenzaDecimal,
+                kpi3Fascia,
+                isExcluded,
+                reqAnnuale,
+                reqTrimestrale
+            });
+
+            // 3. Aggiornamento Card Blu Riepilogo Mese
+            document.getElementById('card-bilancio-ore').textContent = formatMinutesToCardBadge(monthStats.straordinarioMinuti);
+            document.getElementById('card-moltiplicatore').textContent = calc.multiplier.toFixed(1) + "x";
+            document.getElementById('card-fascia-reg').textContent = `Fascia ${kpi1Fascia} (${kpi1Premio}€)`;
+            document.getElementById('card-turni-badge').innerHTML = `${turniEsigibili}<br>turni`;
+            document.getElementById('card-fascia-turni').textContent = calc.kpi2CardLabel;
+
+            document.getElementById('card-cumulo-sub').textContent = `Max ${maxAssenze} giorni consentiti nel mese`;
+            document.getElementById('card-cumulo-val').innerHTML = `${cumuloAssenze} /<br>${maxAssenze}`;
+            // 4. CALCOLO MESE PER MESE + SOMMA TRIMESTRALE + WELFARE
+            const semInfo = getSemesterRange(selectedYear, selectedMonth);
+            document.getElementById('sem-trim-tag').textContent = semInfo.trimTag;
+            document.getElementById('trim-table-title').textContent = semInfo.tableTitle;
+            document.getElementById('sem-period-label').textContent = semInfo.label;
+            document.getElementById('quick-trim-badge').textContent = semInfo.trimTag;
+
+            const offsetTurni = parseInt(document.getElementById('sem-offset-turni').value, 10) || 0;
+            const offsetFestivi = parseInt(document.getElementById('sem-offset-festivi').value, 10) || 0;
+
+            let semTurniTotali = offsetTurni;
+            let semFestiviTotali = offsetFestivi;
+            let semStraordMinuti = 0;
+            let semPremioMensileTot = 0;
+            let breakdownHtml = '';
+            let quickCardsHtml = '';
+
+            semInfo.months.forEach(({ year: mY, month: mIdx }) => {
+                const st = getMonthCalendarStats(mY, mIdx);
+                semTurniTotali += st.turniUtili;
+                semFestiviTotali += st.domFestiviCoperti;
+                semStraordMinuti += st.straordinarioMinuti;
+
+                const mMaxAss = getMaxAssenzeAllowed(mY, mIdx);
+                const mExcl = !reqAnnuale || !reqTrimestrale ||
+                    document.getElementById('excl-disciplinare').value === 'si' ||
+                    st.malattiaEventi > 1 || st.malattiaGiorni > 5 ||
+                    st.cumuloAssenze > mMaxAss ||
+                    st.turniEsigibili < 6 || st.turniUtili < 22 ||
+                    (sinistriNum > 1 && sinistriVal > 7000);
+
+                const mCalc = computeMonthlyAward({
+                    kpi1Premio,
+                    turniCoperti: st.turniEsigibili,
+                    turniTotali: st.turniUtili,
+                    oreEccedenzaDecimal: st.straordinarioMinuti / 60,
+                    kpi3Fascia,
+                    isExcluded: mExcl,
+                    reqAnnuale,
+                    reqTrimestrale
+                });
+
+                semPremioMensileTot += mCalc.net;
+                const isCurrentRow = (mY === selectedYear && mIdx === selectedMonth);
+                const isOk = !mExcl && !mCalc.noAwardFor22Days && reqAnnuale && reqTrimestrale;
+
+                const statusBadge = isOk
+                    ? `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold text-[10px]">OK</span>`
+                    : `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold text-[10px]">${st.turniUtili === 22 ? '22gg 0€' : 'Base/No'}</span>`;
+
+                breakdownHtml += `
+                    <tr onclick="selectMonthFromTrimestre(${mY}, ${mIdx})" class="cursor-pointer ${isCurrentRow ? 'bg-blue-50/90' : 'hover:bg-slate-50'}">
+                        <td class="p-3 font-bold text-slate-800">
+                            ${MONTH_NAMES_IT[mIdx]} '${String(mY).slice(-2)}
+                            ${isCurrentRow ? '<span class="ml-1 text-[10px] font-extrabold text-cotral-royal">• Attivo</span>' : ''}
+                        </td>
+                        <td class="p-3 text-center font-bold text-cotral-royal">${st.turniUtili}</td>
+                        <td class="p-3 text-center font-semibold text-slate-600">${formatMinutesToCardBadge(st.straordinarioMinuti)}</td>
+                        <td class="p-3 text-center">${statusBadge}</td>
+                        <td class="p-3 text-right font-extrabold text-slate-900">${formatEuro(mCalc.net)}</td>
+                    </tr>
+                `;
+
+                const cardStyle = isCurrentRow
+                    ? "bg-cotral-royal text-white border-cotral-royal shadow-xs"
+                    : "bg-slate-50 hover:bg-blue-50/70 text-slate-800 border-slate-200";
+                const subTextStyle = isCurrentRow ? "text-blue-100" : "text-slate-500";
+                const euroStyle = isCurrentRow ? "text-cotral-gold" : "text-cotral-royal";
+
+                quickCardsHtml += `
+                    <button type="button" onclick="selectMonthFromTrimestre(${mY}, ${mIdx})" class="p-2.5 rounded-2xl border ${cardStyle} text-left transition flex flex-col justify-between gap-1">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[11px] font-extrabold truncate">${MONTH_NAMES_IT[mIdx].slice(0, 3)} '${String(mY).slice(-2)}</span>
+                            <span class="text-[10px] font-bold ${subTextStyle}">${st.turniUtili}t</span>
+                        </div>
+                        <span class="text-xs sm:text-sm font-extrabold ${euroStyle} truncate">${formatEuro(mCalc.net)}</span>
+                    </button>
+                `;
+            });
+
+            document.getElementById('quick-trim-month-cards').innerHTML = quickCardsHtml;
+            document.getElementById('quick-trim-sum').textContent = formatEuro(semPremioMensileTot);
+            document.getElementById('trim-sum-hero').textContent = formatEuro(semPremioMensileTot);
+
+            document.getElementById('sem-breakdown-body').innerHTML = breakdownHtml;
+            document.getElementById('sem-tot-turni-col').textContent = semTurniTotali;
+            document.getElementById('sem-tot-fest-col').textContent = `${semFestiviTotali} dom/f`;
+            document.getElementById('sem-tot-ore-col').textContent = formatMinutesToCardBadge(semStraordMinuti);
+            document.getElementById('sem-tot-euro-col').textContent = formatEuro(semPremioMensileTot);
+
+            let welfareBonus = (semTurniTotali >= 139) ? 400 : 0;
+            let festiviBonus = 0;
+            let festBoxIdx = 0;
+
+            if (semFestiviTotali >= 13) { festiviBonus = 100; festBoxIdx = 4; }
+            else if (semFestiviTotali >= 11) { festiviBonus = 80; festBoxIdx = 3; }
+            else if (semFestiviTotali >= 9) { festiviBonus = 60; festBoxIdx = 2; }
+            else if (semFestiviTotali >= 6) { festiviBonus = 40; festBoxIdx = 1; }
+
+            if (!reqAnnuale) {
+                welfareBonus = 0;
+                festiviBonus = 0;
+            }
+
+            const totalSemestraleBonus = welfareBonus + festiviBonus;
+            const pctSem = Math.min(100, Math.round((semTurniTotali / 139) * 100));
+
+            document.getElementById('badge-kpi4').textContent = formatEuro(totalSemestraleBonus);
+            document.getElementById('kpi4-welfare-badge').textContent = formatEuro(welfareBonus);
+            document.getElementById('kpi4-welfare-sub').textContent = `${semTurniTotali} / 139 turni`;
+            document.getElementById('kpi4-festivi-badge').textContent = formatEuro(festiviBonus);
+            document.getElementById('kpi4-festivi-sub').textContent = `${semFestiviTotali} coperti nel semestre`;
+
+            document.getElementById('kpi4-progress-text').textContent = `${semTurniTotali} / 139 (${pctSem}%)`;
+            document.getElementById('kpi4-progress-bar').style.width = `${pctSem}%`;
+
+            const missingTurni = Math.max(0, 139 - semTurniTotali);
+            document.getElementById('kpi4-missing-hint').textContent = missingTurni === 0
+                ? "Obiettivo raggiunto! Hai maturato i 400,00 € di Credito Welfare."
+                : `Mancano ${missingTurni} turni utili per sbloccare i 400,00 € di Credito Welfare.`;
+
+            document.getElementById('sem-festivi-pill').textContent = `${semFestiviTotali} gg`;
+
+            // Aggiorna anche il banner live nella card blu principale
+            document.getElementById('card-live-welfare-turni').textContent = `${semTurniTotali} / 139`;
+            document.getElementById('card-live-festivi').textContent = `${semFestiviTotali}`;
+            document.getElementById('card-live-sem-euro').textContent = formatEuro(totalSemestraleBonus);
+
+            for (let i = 0; i <= 4; i++) {
+                const fBox = document.getElementById('fest-box-' + i);
+                fBox.className = (i === festBoxIdx)
+                    ? "p-2.5 rounded-xl border-2 border-cotral-royal bg-blue-50 font-bold transition"
+                    : "p-2.5 rounded-xl border border-slate-200 bg-white opacity-70 transition";
+            }
+
+            if (shouldSave) saveState();
+            lucide.createIcons();
+        }
+
+        function renderMatrix(activeRow, activeCol) {
+            const tbody = document.getElementById('matrix-body');
+            let html = '';
+            MULTIPLIER_MATRIX.forEach((row, rIdx) => {
+                const isRowActive = (rIdx === activeRow);
+                html += `<tr class="${isRowActive ? 'bg-blue-50/50' : ''}">`;
+                html += `<td class="p-2 text-left font-bold ${isRowActive ? 'text-cotral-royal' : 'text-slate-700'}">${FASCIA2_SHORT_LABELS[rIdx]}</td>`;
+                
+                row.forEach((val, cIdx) => {
+                    const isCellActive = (isRowActive && cIdx === activeCol);
+                    const cellClass = isCellActive 
+                        ? 'bg-cotral-royal text-white font-extrabold rounded' 
+                        : 'text-slate-600 font-medium';
+                    html += `<td class="p-2 ${cellClass}">${val.toFixed(1).replace('.', ',')}</td>`;
+                });
+                html += `</tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // =========================================================================
+        // RENDERING TABELLA GIORNALIERA DIRETTAMENTE EDITABILE A TENDINA
+        // =========================================================================
+        function toggleExpandDay(day) {
+            expandedDay = (expandedDay === day) ? null : day;
+            renderMonthlyTable();
+        }
+
+        function onRowActivityChange(year, monthIndex, day, value) {
+            const key = getDateKey(year, monthIndex, day);
+            const current = { ...getDefaultEntry(), ...(calendarEntries[key] || {}) };
+            calendarEntries[key] = { ...current, activity: value };
+            renderMonthlyTable();
+            calculateAll();
+        }
+
+        function onRowFieldChange(year, monthIndex, day, field, value, rerender = false) {
+            const key = getDateKey(year, monthIndex, day);
+            const current = { ...getDefaultEntry(), ...(calendarEntries[key] || {}) };
+            calendarEntries[key] = { ...current, [field]: value };
+            if (rerender) {
+                renderMonthlyTable();
+            }
+            calculateAll();
+        }
+
+        function formatSexagesimalFieldOnBlur(year, monthIndex, day, field, inputEl) {
+            const mins = parseSexagesimalToMinutes(inputEl.value);
+            const formatted = inputEl.value.trim() ? formatMinutesToSexagesimal(mins) : "";
+            inputEl.value = formatted;
+            onRowFieldChange(year, monthIndex, day, field, formatted, true);
+        }
+
+        function fillWorkdaysWithShifts() {
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const key = getDateKey(selectedYear, selectedMonth, day);
+                const existing = { ...getDefaultEntry(), ...(calendarEntries[key] || {}) };
+                const effectiveType = getEffectiveDayType(selectedYear, selectedMonth, day, existing);
+                if (effectiveType === "feriale" && existing.activity === "nessuna") {
+                    calendarEntries[key] = { ...existing, activity: "lavorativo" };
+                }
+            }
+            renderMonthlyTable();
+            calculateAll();
+            showToast("Feriali compilati come Giorno lavorativo");
+        }
+
+        function clearCurrentMonthCalendar() {
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                delete calendarEntries[getDateKey(selectedYear, selectedMonth, day)];
+            }
+            renderMonthlyTable();
+            calculateAll();
+            showToast("Mese svuotato");
+        }
+
+        function getActivityRowStyle(act, effectiveType) {
+            if (act === "lavorativo") {
+                return (effectiveType === "domenica" || effectiveType === "festivo")
+                    ? "bg-amber-50/70"
+                    : "bg-emerald-50/40";
+            }
+            if (act === "distacco_aziendale") return "bg-blue-50/50";
+            if (act === "malattia") return "bg-rose-50/70";
+            if (ASSENZA_CUMULO_ACTIVITIES.has(act)) return "bg-orange-50/50";
+            if (effectiveType === "festivo" || effectiveType === "domenica") return "bg-rose-50/30";
+            return "bg-white";
+        }
+
+        function getActivityMiniBadge(act, effectiveType) {
+            if (act === "lavorativo" && (effectiveType === "domenica" || effectiveType === "festivo")) {
+                return `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">Dom/Fest +1</span>`;
+            }
+            if (ESIGIBILE_ACTIVITIES.has(act)) {
+                return `<span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">Esigibile</span>`;
+            }
+            if (act === "malattia") {
+                return `<span class="text-[10px] font-bold bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded">Malattia</span>`;
+            }
+            if (ASSENZA_CUMULO_ACTIVITIES.has(act)) {
+                return `<span class="text-[10px] font-bold bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded">Assenza</span>`;
+            }
+            if (UTILE_ACTIVITIES.has(act)) {
+                return `<span class="text-[10px] font-bold bg-blue-100 text-cotral-royal px-1.5 py-0.5 rounded">Utile</span>`;
+            }
+            return '';
+        }
+
+        function renderMonthlyTable() {
+            const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+            const mNameShort = MONTH_NAMES_IT[selectedMonth].slice(0, 3);
+            let html = '';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const d = new Date(selectedYear, selectedMonth, day);
+                const dowName = WEEKDAY_NAMES_SHORT[d.getDay()];
+                const holidayName = getItalianHolidayName(selectedYear, selectedMonth, day);
+                const key = getDateKey(selectedYear, selectedMonth, day);
+                const entry = { ...getDefaultEntry(), ...(calendarEntries[key] || {}) };
+                const effectiveType = getEffectiveDayType(selectedYear, selectedMonth, day, entry);
+                const isExpanded = (expandedDay === day);
+
+                const dayLabel = day === 1 ? `1° ${mNameShort}` : `${day} ${mNameShort}`;
+                const rowBg = getActivityRowStyle(entry.activity, effectiveType);
+                const miniBadge = getActivityMiniBadge(entry.activity, effectiveType);
+
+                const isRedDay = (effectiveType === "domenica" || effectiveType === "festivo");
+                const dayCircleClass = isRedDay
+                    ? "bg-rose-100 text-rose-800 border-rose-200"
+                    : "bg-slate-100 text-slate-800 border-slate-200";
+
+                const hasExtraDetails = Boolean(entry.turnoVettura || entry.durataTurno || entry.durataStraordinario || entry.dayType !== "auto");
+                const escTurnoVettura = (entry.turnoVettura || '').replace(/"/g, '&quot;');
+                const escDurataTurno = (entry.durataTurno || '').replace(/"/g, '&quot;');
+                const escDurataStraord = (entry.durataStraordinario || '').replace(/"/g, '&quot;');
+
+                html += `
+                    <div class="${rowBg} transition-colors">
+                        <!-- Riga Principale Compatta -->
+                        <div class="px-3.5 py-2.5 flex items-center gap-2.5">
+                            <!-- Colonna Data (es. 1° Nov / Dom) -->
+                            <button type="button" onclick="toggleExpandDay(${day})" class="w-16 shrink-0 text-left flex flex-col">
+                                <span class="text-xs font-extrabold ${isRedDay ? 'text-rose-700' : 'text-slate-900'} leading-tight">${dayLabel}</span>
+                                <span class="text-[10px] font-semibold ${isRedDay ? 'text-rose-500' : 'text-slate-400'}">${dowName}${holidayName ? ' • Fest.' : ''}</span>
+                            </button>
+
+                            <!-- Tendina Attività Direttamente Editabile -->
+                            <div class="flex-grow min-w-0">
+                                <select aria-label="Attività ${dayLabel}" onchange="onRowActivityChange(${selectedYear}, ${selectedMonth}, ${day}, this.value)" class="w-full rounded-xl border border-slate-300/90 bg-white/95 px-2.5 py-2 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                    <option value="nessuna" ${entry.activity === 'nessuna' ? 'selected' : ''}>— Seleziona attività —</option>
+                                    <option value="lavorativo" ${entry.activity === 'lavorativo' ? 'selected' : ''}>Giorno lavorativo / Dom. lavorata</option>
+                                    <option value="distacco_aziendale" ${entry.activity === 'distacco_aziendale' ? 'selected' : ''}>Distacco aziendale</option>
+                                    <option value="distacco_sindacale" ${entry.activity === 'distacco_sindacale' ? 'selected' : ''}>Distacco sindacale (non esig.)</option>
+                                    <option value="recupero_riposo" ${entry.activity === 'recupero_riposo' ? 'selected' : ''}>Recupero riposo (non esig.)</option>
+                                    <option value="assenza_non_esigibile" ${entry.activity === 'assenza_non_esigibile' ? 'selected' : ''}>Assenza non esigibile</option>
+                                    <option value="legge_104" ${entry.activity === 'legge_104' ? 'selected' : ''}>Legge 104</option>
+                                    <option value="malattia" ${entry.activity === 'malattia' ? 'selected' : ''}>Malattia</option>
+                                    <option value="congedo" ${entry.activity === 'congedo' ? 'selected' : ''}>Congedo / Ferie</option>
+                                    <option value="formazione" ${entry.activity === 'formazione' ? 'selected' : ''}>Formazione</option>
+                                    <option value="collegio" ${entry.activity === 'collegio' ? 'selected' : ''}>Collegio Medico</option>
+                                    <option value="disciplinare" ${entry.activity === 'disciplinare' ? 'selected' : ''}>Disciplinare</option>
+                                </select>
+                                <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                    ${miniBadge}
+                                    ${entry.durataStraordinario ? `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">+${entry.durataStraordinario} str.</span>` : ''}
+                                    ${entry.turnoVettura ? `<span class="text-[10px] text-slate-500 font-medium">${escTurnoVettura}</span>` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Pulsante Espandi Dettagli (Turno, Orari HH:MM, Tipo Giorno) -->
+                            <button type="button" onclick="toggleExpandDay(${day})" title="Orari e dettagli giorno" class="shrink-0 w-9 h-9 rounded-xl border ${isExpanded ? 'bg-cotral-royal text-white border-cotral-royal' : (hasExtraDetails ? 'bg-blue-50 text-cotral-royal border-blue-200' : 'bg-slate-50 text-slate-500 border-slate-200')} flex items-center justify-center transition">
+                                <i data-lucide="${isExpanded ? 'chevron-up' : 'clock'}" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Pannello Dettaglio Espandibile (Turno/Vettura, Durata Turno, Straordinario, Tipo Giorno) -->
+                        ${isExpanded ? `
+                            <div class="px-3.5 pb-3.5 pt-1 bg-slate-50/90 border-t border-slate-200/70 space-y-2.5">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Turno / Vettura</label>
+                                        <input type="text" placeholder="Es. T12 / V450" value="${escTurnoVettura}" oninput="onRowFieldChange(${selectedYear}, ${selectedMonth}, ${day}, 'turnoVettura', this.value, false)" class="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Tipo Giorno</label>
+                                        <select onchange="onRowFieldChange(${selectedYear}, ${selectedMonth}, ${day}, 'dayType', this.value, true)" class="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                            <option value="auto" ${entry.dayType === 'auto' ? 'selected' : ''}>Auto (${dowName}${holidayName ? ' / Fest.' : ''})</option>
+                                            <option value="feriale" ${entry.dayType === 'feriale' ? 'selected' : ''}>Feriale</option>
+                                            <option value="sabato" ${entry.dayType === 'sabato' ? 'selected' : ''}>Sabato</option>
+                                            <option value="domenica" ${entry.dayType === 'domenica' ? 'selected' : ''}>Domenica</option>
+                                            <option value="festivo" ${entry.dayType === 'festivo' ? 'selected' : ''}>Festività</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Durata Turno (HH:MM)</label>
+                                        <input type="text" placeholder="07:30" value="${escDurataTurno}" oninput="onRowFieldChange(${selectedYear}, ${selectedMonth}, ${day}, 'durataTurno', this.value, false)" onblur="formatSexagesimalFieldOnBlur(${selectedYear}, ${selectedMonth}, ${day}, 'durataTurno', this)" class="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold uppercase text-emerald-700 block mb-1">Straordinario (HH:MM)</label>
+                                        <input type="text" placeholder="01:30" value="${escDurataStraord}" oninput="onRowFieldChange(${selectedYear}, ${selectedMonth}, ${day}, 'durataStraordinario', this.value, false)" onblur="formatSexagesimalFieldOnBlur(${selectedYear}, ${selectedMonth}, ${day}, 'durataStraordinario', this)" class="w-full rounded-xl border border-emerald-300 bg-white px-2.5 py-1.5 text-xs font-bold text-emerald-700 focus:ring-2 focus:ring-cotral-royal focus:outline-none">
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            document.getElementById('monthly-rows-container').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function saveState() {
+            try {
+                const state = {
+                    reqAnnuale: document.getElementById('req-annuale').checked,
+                    reqTrimestrale: document.getElementById('req-trimestrale').checked,
+                    disciplinare: document.getElementById('excl-disciplinare').value,
+                    sinistriNum: document.getElementById('excl-sinistri-num').value,
+                    sinistriVal: document.getElementById('excl-sinistri-valore').value,
+                    kpi1Percent: document.getElementById('kpi1-percent').value,
+                    kpi1Fascia: document.getElementById('kpi1-fascia').value,
+                    kpi3Fascia: document.querySelector('input[name="kpi3-fascia"]:checked')?.value || "1",
+                    semOffsetTurni: document.getElementById('sem-offset-turni').value,
+                    semOffsetFestivi: document.getElementById('sem-offset-festivi').value,
+                    selectedYear,
+                    selectedMonth,
+                    selectedTrimestre,
+                    expandedDay,
+                    calendarEntries
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (_) {}
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const s = JSON.parse(raw);
+
+                if (typeof s.reqAnnuale === 'boolean') document.getElementById('req-annuale').checked = s.reqAnnuale;
+                if (typeof s.reqTrimestrale === 'boolean') document.getElementById('req-trimestrale').checked = s.reqTrimestrale;
+                if (s.disciplinare !== undefined) document.getElementById('excl-disciplinare').value = s.disciplinare;
+                if (s.sinistriNum !== undefined) document.getElementById('excl-sinistri-num').value = s.sinistriNum;
+                if (s.sinistriVal !== undefined) document.getElementById('excl-sinistri-valore').value = s.sinistriVal;
+                if (s.kpi1Percent !== undefined) document.getElementById('kpi1-percent').value = s.kpi1Percent;
+                if (s.kpi1Fascia !== undefined) document.getElementById('kpi1-fascia').value = s.kpi1Fascia;
+                if (s.kpi3Fascia !== undefined) {
+                    const radio = document.querySelector(`input[name="kpi3-fascia"][value="${s.kpi3Fascia}"]`);
+                    if (radio) radio.checked = true;
+                }
+                if (s.semOffsetTurni !== undefined) document.getElementById('sem-offset-turni').value = s.semOffsetTurni;
+                if (s.semOffsetFestivi !== undefined) document.getElementById('sem-offset-festivi').value = s.semOffsetFestivi;
+                if (typeof s.selectedYear === 'number') selectedYear = s.selectedYear;
+                if (typeof s.selectedMonth === 'number') selectedMonth = s.selectedMonth;
+                if (typeof s.selectedTrimestre === 'number') selectedTrimestre = s.selectedTrimestre;
+                else selectedTrimestre = detectTrimestreFromMonth(selectedMonth);
+                if (s.expandedDay !== undefined) expandedDay = s.expandedDay;
+                if (s.calendarEntries && typeof s.calendarEntries === 'object') {
+                    calendarEntries = s.calendarEntries;
+                }
+            } catch (_) {}
+        }
+
+        function resetAll() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+            calendarEntries = {};
+            selectedYear = 2026;
+            selectedMonth = 10;
+            selectedTrimestre = 2;
+            expandedDay = 1;
+
+            document.getElementById('trimestre-selector').value = String(selectedTrimestre);
+            document.getElementById('month-year-selector').value = `${selectedYear}-${selectedMonth}`;
+            document.getElementById('req-annuale').checked = true;
+            document.getElementById('req-trimestrale').checked = true;
+            document.getElementById('excl-disciplinare').value = 'no';
+            document.getElementById('excl-sinistri-num').value = 0;
+            document.getElementById('excl-sinistri-valore').value = 0;
+
+            document.getElementById('kpi1-percent').value = "100.00";
+            document.getElementById('kpi1-fascia').value = "1";
+
+            const radio1 = document.querySelector('input[name="kpi3-fascia"][value="1"]');
+            if (radio1) radio1.checked = true;
+
+            document.getElementById('sem-offset-turni').value = 0;
+            document.getElementById('sem-offset-festivi').value = 0;
+
+            updateMonthLabelsUI();
+            renderQuarterMonthPills();
+            renderMonthlyTable();
+            calculateAll(false);
+            showToast("Tutti i dati sono stati azzerati");
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateMonthSelector();
+            loadState();
+            document.getElementById('trimestre-selector').value = String(selectedTrimestre);
+            document.getElementById('month-year-selector').value = `${selectedYear}-${selectedMonth}`;
+            updateMonthLabelsUI();
+            renderQuarterMonthPills();
+            renderMonthlyTable();
+            lucide.createIcons();
+            calculateAll(false);
+        });
+    </script>
+</body>
+</html>
+```
